@@ -11,18 +11,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float turnSpeed = 15f;
     [SerializeField] Transform[] groundCheckPoints;
     
-    // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();   
     }
 
-    // Update is called once per frame
     void Update()
     {
         MoveInputs();
-        print(IsOnGround());
     }
 
     void MoveInputs()
@@ -37,14 +34,12 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKey("a"))
         {
             rb.velocity = new Vector3(Mathf.Clamp((-moveSpeed *100)* Time.deltaTime,-15f,0f),rb.velocity.y ,0);
-            // transform.rotation = Quaternion.Euler(0f,-90f,0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.Euler(0,-90.1f,0),turnSpeed*Time.deltaTime);
             anim.SetBool("IsWalk",true);
         }
         else if(Input.GetKey("d"))
         {
             rb.velocity = new Vector3(Mathf.Clamp((moveSpeed * 100) * Time.deltaTime,0f,15f),rb.velocity.y ,0);
-            // transform.rotation = Quaternion.Euler(0f,90f,0f);
             transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.Euler(0,90.1f,0),turnSpeed*Time.deltaTime);
             anim.SetBool("IsWalk",true);
         }
