@@ -4,23 +4,46 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] int maxHealth = 2;
+    int currenHealth;
+    public int GetHealth
+    {
+        get {return currenHealth;}
+        set {currenHealth = value;
+                if(currenHealth > maxHealth)
+                    currenHealth = maxHealth;       
+            }
+    }
     void Start()
     {
-        
+        currenHealth = maxHealth;
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         
     }
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.GetComponent<BulletMovement>() == true)
+        BulletMovement bullet = other.gameObject.GetComponent<BulletMovement>();
+
+        if(bullet)
         {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+            if(bullet.owner != gameObject)
+            {
+                Destroy(other.gameObject);
+                currenHealth--;
+                Debug.Log(gameObject.name +"hp : "+currenHealth);
+                Die();    
+            }
+            
         }
+    }
+
+    void Die()
+    {
+        if(currenHealth <= 0)
+            Destroy(gameObject);
     }
 }

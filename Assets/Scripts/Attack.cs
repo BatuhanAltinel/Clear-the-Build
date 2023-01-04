@@ -9,6 +9,15 @@ public class Attack : MonoBehaviour
     [SerializeField] float fireRate = 0.5f;
     [SerializeField] float currentFireRate = 0f;
     [SerializeField] int ammoCount = 5;
+    [SerializeField] int maxAmmoCount = 10;
+    public int GetBullet
+    {
+        get{return ammoCount;}
+        set{ammoCount = value;
+            if(ammoCount > maxAmmoCount)
+                ammoCount = maxAmmoCount;
+            }
+    }
     bool canFire = true;
 
     void Start()
@@ -43,7 +52,8 @@ public class Attack : MonoBehaviour
             bulletRot = -180;
         else if(diff < 0)
             bulletRot = 0;
-        Instantiate(bulletPrefab,firePoint.position,Quaternion.Euler(0,0,bulletRot));
+        GameObject bullet = Instantiate(bulletPrefab,firePoint.position,Quaternion.Euler(0,0,bulletRot));
+        bullet.GetComponent<BulletMovement>().owner = this.gameObject;
     }
 
 

@@ -27,8 +27,8 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKey("space") && IsOnGround())
         {
             rb.velocity = new Vector3(rb.velocity.x ,Mathf.Clamp((jumpPower * 100) * Time.deltaTime,0f,15f),0);
-            anim.SetBool("IsWalk",false);
             anim.SetBool("IsJump",true);
+            anim.SetBool("IsWalk",false);
             StartCoroutine(StopJumpAnimation());
         }
         if(Input.GetKey("a"))
