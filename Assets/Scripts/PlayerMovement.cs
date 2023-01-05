@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]float moveSpeed = 3f;
     [SerializeField] float jumpPower = 5f;
     [SerializeField] float turnSpeed = 15f;
+    bool jumped;
     [SerializeField] Transform[] groundCheckPoints;
     
     void Start()
@@ -29,19 +30,22 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x ,Mathf.Clamp((jumpPower * 100) * Time.deltaTime,0f,15f),0);
             anim.SetBool("IsJump",true);
             anim.SetBool("IsWalk",false);
+            jumped = true;
             StartCoroutine(StopJumpAnimation());
         }
         if(Input.GetKey("a"))
         {
             rb.velocity = new Vector3(Mathf.Clamp((-moveSpeed *100)* Time.deltaTime,-15f,0f),rb.velocity.y ,0);
             transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.Euler(0,-90.1f,0),turnSpeed*Time.deltaTime);
-            anim.SetBool("IsWalk",true);
+            if(!jumped)
+                anim.SetBool("IsWalk",true);
         }
         else if(Input.GetKey("d"))
         {
             rb.velocity = new Vector3(Mathf.Clamp((moveSpeed * 100) * Time.deltaTime,0f,15f),rb.velocity.y ,0);
             transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.Euler(0,90.1f,0),turnSpeed*Time.deltaTime);
-            anim.SetBool("IsWalk",true);
+            if(!jumped)
+                anim.SetBool("IsWalk",true);
         }
         else
         {
@@ -69,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator StopJumpAnimation()
     {
         yield return new WaitForSeconds(1f);
+        jumped = false;
         anim.SetBool("IsJump",false);
     }
 }
