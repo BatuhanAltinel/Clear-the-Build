@@ -10,6 +10,7 @@ public class Attack : MonoBehaviour
     [SerializeField] float currentFireRate = 0f;
     [SerializeField] int ammoCount = 5;
     [SerializeField] int maxAmmoCount = 10;
+    [SerializeField] bool isPlayer = false;
     public int GetBullet
     {
         get{return ammoCount;}
@@ -18,6 +19,9 @@ public class Attack : MonoBehaviour
                 ammoCount = maxAmmoCount;
             }
     }
+    public int GetMaxBulletAmount{get{return maxAmmoCount;}}
+
+    public float GetCurrentFireRate{get{return currentFireRate;} set{currentFireRate = value;}}
     bool canFire = true;
 
     void Start()
@@ -29,13 +33,17 @@ public class Attack : MonoBehaviour
     {
         CheckCanFire();
 
-        if(Input.GetMouseButtonDown(0) && canFire && ammoCount > 0)
+        if(isPlayer)
         {
-            Fire();
+            if(Input.GetMouseButtonDown(0) && canFire && ammoCount > 0)
+            {
+                Fire();
+            }
         }
+        
     }
 
-    void Fire()
+    public void Fire()
     {
         canFire = false;
         SpawnBullet();
